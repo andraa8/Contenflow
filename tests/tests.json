@@ -1,0 +1,232 @@
+[
+  {
+    "name": "Inbox/komentar can be created with account and date and deleted",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "Inbox/Komentar section",
+      "Tambah inbox/komentar",
+      "account selection",
+      "date selection",
+      "long inbox/comment content",
+      "comment content link",
+      "POST /api/engagements",
+      "DELETE /api/engagements/:id",
+      "delete inbox/comment"
+    ],
+    "description": "Verifies an Inbox or Komentar can store account and date, preserve long text, and be deleted permanently.",
+    "steps": [
+      "Open Engagement and scroll to Inbox/Komentar",
+      "Click Tambah, select account Facebook and a date, then select Inbox",
+      "Enter a long inbox message and save",
+      "Confirm the account and date are shown on the new record",
+      "Click the delete button and confirm deletion",
+      "Refresh the page"
+    ],
+    "expected": "The inbox shows the selected account and date before deletion, then is removed and remains absent after refresh."
+  },
+  {
+    "name": "Komentar preserves long content and content link",
+    "viewport": "mobile",
+    "covers": [
+      "Komentar type",
+      "long comment content",
+      "comment content link",
+      "POST /api/engagements",
+      "persistence after refresh"
+    ],
+    "description": "Verifies a long Komentar entry with a content link remains visible after refresh.",
+    "steps": [
+      "Open Engagement and scroll to Inbox/Komentar",
+      "Click Tambah and select Komentar",
+      "Choose an account and date",
+      "Enter a long comment and add a content link",
+      "Save the record",
+      "Refresh the page"
+    ],
+    "expected": "The full comment text, selected account, date, and content link remain visible after refresh."
+  },
+  {
+    "name": "Inbox/komentar filters by account and date",
+    "viewport": "desktop",
+    "covers": [
+      "Inbox/Komentar account filter",
+      "Inbox/Komentar date range filter",
+      "filter reset"
+    ],
+    "description": "Verifies the Inbox/Komentar data box can filter records by account and date range.",
+    "setup": [
+      "Create one Inbox for Facebook dated 2026-09-10 and one Komentar for TikTok dated 2026-09-20"
+    ],
+    "steps": [
+      "Open Engagement and scroll to Inbox/Komentar",
+      "Set the account filter to Facebook",
+      "Set the date range from 2026-09-01 to 2026-09-15",
+      "Review the filtered list",
+      "Click Reset"
+    ],
+    "expected": "Only the Facebook record dated 2026-09-10 is visible while the filters are active, and both records are visible again after Reset."
+  },
+  {
+    "name": "YouTube engagement stores manual monthly views impressions and CTR",
+    "viewport": "desktop",
+    "covers": [
+      "YouTube engagement",
+      "monthly YouTube filter",
+      "views",
+      "impression",
+      "CTR impression",
+      "manual input",
+      "GET /api/youtube-engagement",
+      "PUT /api/youtube-engagement/:id"
+    ],
+    "description": "Verifies YouTube engagement data uses separate monthly storage.",
+    "steps": [
+      "Open Engagement",
+      "Choose a month",
+      "Confirm a visible horizontal separator appears between the engagement summary cards and account cards",
+      "Open the YouTube card",
+      "Enter Views, Impression, and CTR impression",
+      "Save",
+      "Refresh the page"
+    ],
+    "expected": "The saved YouTube metrics remain after refresh."
+  },
+  {
+    "name": "Performa iklan saves up to five ad records per account",
+    "viewport": "desktop",
+    "covers": [
+      "Performa Iklan",
+      "five ad slots",
+      "optional ad slots",
+      "ad save button",
+      "POST /api/ad-performance",
+      "PUT /api/ad-performance/:id",
+      "aggregated account totals",
+      "summary card labels",
+      "separator between summary and account cards",
+      "follower baru summary card",
+      "account cards omit Total 5 iklan",
+      "persistence after refresh"
+    ],
+    "description": "Verifies entered advertising data is saved for multiple ad slots, optional blank slots are allowed, and account totals persist.",
+    "steps": [
+      "Open Performa Iklan and choose the current month",
+      "Confirm the summary cards are labeled with the Iklan prefix and include Iklan follower baru",
+      "Open the Facebook account card",
+      "Enter values in Iklan 1 and Iklan 3, leaving Iklan 2, 4, and 5 blank",
+      "Click Simpan semua data",
+      "Confirm the Facebook totals include Iklan 1 and Iklan 3 and the account card does not show Total 5 iklan",
+      "Refresh the page and reopen Facebook"
+    ],
+    "expected": "The entered ad data is saved, the blank ad slots do not block saving, and the account totals remain after refresh."
+  },
+  {
+    "name": "Followers uses subscribers wording for YouTube",
+    "viewport": "desktop",
+    "covers": [
+      "YouTube subscribers label",
+      "follower calculations"
+    ],
+    "description": "Verifies only the displayed wording changes for YouTube.",
+    "steps": [
+      "Open Followers",
+      "Review the YouTube card and update form"
+    ],
+    "expected": "YouTube uses subscriber wording while the underlying follower values and calculations remain unchanged."
+  },
+  {
+    "name": "Zero follower change is excluded from history",
+    "viewport": "desktop",
+    "covers": [
+      "zero follower change guardrail",
+      "PUT /api/followers/:id",
+      "GET /api/follower-changes",
+      "Perubahan follower excludes zero values"
+    ],
+    "description": "Verifies an account with no follower increase or decrease does not create a history entry, and an existing monthly entry is removed when changed to zero.",
+    "steps": [
+      "Open Followers and update one account with Followers baru set to 0 for a selected month",
+      "Save the follower update",
+      "Open Perubahan follower and review the selected month",
+      "Edit the same monthly follower update from a nonzero change to 0 and save"
+    ],
+    "expected": "No zero-valued follower change appears in Perubahan follower, and an existing monthly change disappears when it is changed to 0."
+  },
+  {
+    "name": "Overview filters all displayed data to the selected month",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "Overview navigation",
+      "selected month filter",
+      "monthly followers summary",
+      "monthly engagement summary",
+      "monthly ad performance",
+      "monthly post summary",
+      "Inbox/Komentar monthly data"
+    ],
+    "description": "Verifies Overview uses only records belonging to the selected month across its summary sections.",
+    "steps": [
+      "Open Overview",
+      "Choose month 2026-09",
+      "Review the Overview KPI cards and monthly sections",
+      "Change the month to 2026-10"
+    ],
+    "expected": "All Overview values and sections update to use only the selected month, and no prior-to-latest trend is shown."
+  },
+  {
+    "name": "Overview excludes the removed cards and charts",
+    "viewport": "mobile",
+    "covers": [
+      "Overview layout",
+      "no total followers KPI",
+      "no content type chart",
+      "no Inbox vs Komentar chart",
+      "Inbox and Komentar data retained"
+    ],
+    "description": "Verifies the Overview layout keeps inbox/comment information while omitting the requested total followers, content type, and inbox-vs-comment charts.",
+    "steps": [
+      "Open Overview on a mobile viewport",
+      "Review the KPI cards and content sections",
+      "Scroll through the Overview"
+    ],
+    "expected": "There is no Total Followers KPI, no Jenis Konten chart, and no Inbox vs Komentar chart, while Inbox and Komentar counts and entries remain visible."
+  },
+  {
+    "name": "Existing monthly data remains separate when Overview month changes",
+    "viewport": "desktop",
+    "covers": [
+      "monthly data separation",
+      "historical month preservation",
+      "Overview month switching"
+    ],
+    "description": "Verifies switching the Overview month changes the displayed dataset without merging different months into one summary.",
+    "steps": [
+      "Open Overview and choose 2026-09",
+      "Note the displayed monthly values",
+      "Switch to 2026-10",
+      "Switch back to 2026-09"
+    ],
+    "expected": "Each selected month shows its own stored data and returning to 2026-09 restores the September-only values."
+  },
+  {
+    "name": "Followers growth compares August against July",
+    "viewport": "desktop",
+    "covers": [
+      "Followers growth",
+      "month-over-month follower calculation",
+      "July to August comparison",
+      "historical follower snapshots"
+    ],
+    "description": "Verifies the Followers card calculates a selected month's growth from that month's follower snapshot versus the immediately previous month's snapshot.",
+    "steps": [
+      "Open Followers",
+      "Enter or confirm a July follower snapshot for an account",
+      "Enter or confirm an August follower snapshot for the same account",
+      "Select August in the Followers month filter",
+      "Review the Followers growth value"
+    ],
+    "expected": "August growth equals (August followers minus July followers) divided by July followers, multiplied by 100, and the value is shown when both monthly snapshots exist."
+  }
+]
